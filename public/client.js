@@ -146,3 +146,30 @@ socket.on('state', s => {
   renderHand();
   updateControls();
 });
+
+// --- LÓGICA DO CHAT ---
+socket.on('chatMessage', ({ name, text }) => {
+  const div = document.createElement('div');
+  // Usar textContent em vez de innerHTML nas variáveis protege contra malta que tente injetar código
+  div.innerHTML = `<b></b><span></span>`;
+  div.querySelector('b').textContent = name + ':';
+  div.querySelector('span').textContent = text;
+  
+  $('chat-messages').appendChild(div);
+  
+  // Faz scroll automático para a última mensagem
+  $('chat-messages').scrollTop = $('chat-messages').scrollHeight;
+});
+
+function sendChat() {
+  const text = $('chat-input').value.trim();
+  if (text) {
+    socket.emit('chat', text);
+    $('chat-input').value = '';
+  }
+}
+
+$('chat-send').onclick = sendChat;
+$('chat-input').onkeypress = e => { 
+  if (e.key === 'Enter') sendChat(); 
+};

@@ -67,6 +67,21 @@ io.on('connection', socket => {
   socket.on('play', act(ids => G.play(room, pid, ids)));
   socket.on('pass', act(() => G.pass(room, pid)));
 
+  // Lógica do Chat
+  socket.on('chat', text => {
+    if (!room) return;
+    text = clean(text).slice(0, 100); // Limpa o texto e limita a 100 caracteres
+    if (!text) return;
+    
+    const p = room.players.find(x => x.pid === pid);
+    if (p) {
+      // Envia apenas a mensagem de chat para todos na sala (não atualiza o jogo todo)
+      room.players.forEach(op => {
+        if (op.sid) io.to(op.sid).emit('chatMessage', { name: p.name, text });
+      });
+    }
+  });
+
   socket.on('disconnect', () => {
     if (!room) return;
     const i = room.players.findIndex(p => p.pid === pid);
