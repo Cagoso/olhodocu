@@ -67,6 +67,27 @@ io.on('connection', socket => {
   socket.on('play', act(ids => G.play(room, pid, ids)));
   socket.on('pass', act(() => G.pass(room, pid)));
 
+  // NOVO: Evento para sair da sala voluntariamente
+  socket.on('leave', cb => {
+    if (!room) return fail(cb, 'Não estás numa sala');
+    const i = room.players.findIndex(p => p.pid === pid);
+    if (i >= 0) {
+      if (room.status === 'lobby') {
+        // Se ainda estiverem no lobby, removemos o jogador da sala
+        room.players.splice(i, 1);
+        if (!room.players.length) rooms.delete(room.code); // Apaga a sala se ficar vazia
+        else if (room.hostPid === pid) room.hostPid = room.players[0].pid; // Passa o anfitrião a outro
+      } else { 
+        // Se o jogo já começou, apenas marcamos como offline para não partir a mesa
+        room.players[i].connected = false; 
+        room.players[i].sid = null; 
+      }
+      broadcast(room);
+    }
+    room = null; // O jogador já não pertence à sala no servidor
+    cb && cb({ ok: true });
+  });
+
   // Lógica do Chat
   socket.on('chat', text => {
     if (!room) return;

@@ -33,6 +33,19 @@ function enter(ev, extra) {
 $('create').onclick = () => enter('create');
 $('join').onclick = () => enter('join', { code: $('code').value });
 $('copy').onclick = () => navigator.clipboard && navigator.clipboard.writeText(state.code).then(() => toast('Código copiado'));
+// NOVO: Ação do botão Sair
+$('leave').onclick = () => {
+  socket.emit('leave', res => {
+    if (res && res.ok) {
+      localStorage.removeItem('room'); // Limpa a memória para não forçar reconexão
+      state = null;
+      $('game').classList.add('hidden'); // Esconde a mesa
+      $('lobby').classList.remove('hidden'); // Mostra o lobby
+    } else {
+      handle(res);
+    }
+  });
+};
 $('start').onclick = () => socket.emit('start', null, handle);
 $('play').onclick = () => { socket.emit('play', [...selected], res => { handle(res); if (res && res.ok) selected.clear(); }); };
 $('pass').onclick = () => socket.emit('pass', null, handle);
