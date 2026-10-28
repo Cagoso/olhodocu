@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olho do Cu · Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="lobby" class="screen">
+  <h1>Olho do Cu</h1>
+  <p class="sub">Cartas online com amigos, 4 a 8 jogadores.</p>
+  <input id="name" placeholder="O teu nome" maxlength="16" autocomplete="nickname">
+  <button id="create">Criar sala</button>
+  <div class="row"><input id="code" placeholder="Código" maxlength="4"><button id="join" class="alt">Entrar</button></div>
+  <p id="err" class="err"></p>
+</main>
+
+<main id="game" class="screen hidden">
+  <header>
+    <span>Sala <b id="roomcode"></b></span>
+    <button id="copy" class="alt small">Copiar código</button>
+  </header>
+  <section id="opps"></section>
+  <section id="table"><div id="tablecards"></div><p id="log"></p></section>
+  <section id="exchange" class="hidden">
+    <p id="extext"></p>
+    <div id="excards"></div>
+    <div class="row">
+      <button id="exlow" class="alt">Dar as mais baixas</button>
+      <button id="exok">Confirmar troca</button>
+    </div>
+  </section>
+  <section id="controls">
+    <button id="start" class="hidden">Começar</button>
+    <button id="play">Jogar</button>
+    <button id="pass" class="alt">Passar</button>
+  </section>
+  <section id="hand"></section>
+</main>
+<div id="toast"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="client.js"></script>
+</body>
+</html>

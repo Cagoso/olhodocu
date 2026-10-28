@@ -1,0 +1,276 @@
+:root {
+  --bg: #0b132b;          /* Fundo principal (Azul meia-noite escuro) */
+  --felt: #1c2541;        /* Cor da mesa */
+  --paper: #f8fafc;       /* Branco das cartas */
+  --ink: #1e293b;         /* Preto do texto das cartas */
+  --red: #ef4444;         /* Vermelho mais vibrante */
+  --gold: #f4d06f;        /* Dourado premium */
+  --gold-glow: rgba(244, 208, 111, 0.4);
+  --mute: #94a3b8;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--paper);
+  font: 16px/1.5 'Poppins', sans-serif; /* Fonte moderna para a UI */
+}
+
+.hidden { display: none !important; }
+
+.screen {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+}
+
+#lobby { justify-content: center; max-width: 400px; text-align: center; }
+
+h1 {
+  font-family: 'Playfair Display', serif; /* Fonte clássica para o título */
+  font-size: 3rem;
+  margin: 0;
+  color: var(--gold);
+  text-shadow: 0 2px 10px var(--gold-glow);
+}
+
+.sub { margin: -5px 0 15px; color: var(--mute); font-size: 1.1rem; }
+
+input {
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #3a506b;
+  background: rgba(28, 37, 65, 0.7);
+  color: var(--paper);
+  font: inherit;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+input:focus-visible { outline: none; border-color: var(--gold); }
+
+#code { text-transform: uppercase; letter-spacing: 0.4em; text-align: center; font-weight: bold; }
+
+.row { display: flex; gap: 10px; }
+
+button {
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--gold);
+  color: var(--bg);
+  font: bold 1.1rem 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px var(--gold-glow);
+}
+
+button:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+
+button.alt {
+  background: transparent;
+  color: var(--paper);
+  border: 2px solid #3a506b;
+  box-shadow: none;
+}
+
+button.alt:hover:not(:disabled) {
+  border-color: var(--paper);
+  background: rgba(255,255,255,0.05);
+}
+
+button.small { padding: 8px 12px; font-size: 0.9rem; }
+
+button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.err { color: #ff6b6b; min-height: 1.4em; margin: 0; font-weight: 600; }
+
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+header b { font-family: 'Poppins', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; color: var(--gold); }
+
+#opps { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.p {
+  flex: 1 1 120px;
+  background: rgba(28, 37, 65, 0.6);
+  border: 2px solid #2d3e50;
+  border-radius: 12px;
+  padding: 10px 12px;
+  transition: all 0.3s ease;
+}
+
+/* Destaque para quem está a jogar */
+.p.turn {
+  background: #1c2541;
+  border-color: var(--gold);
+  box-shadow: 0 0 15px var(--gold-glow);
+  transform: translateY(-3px);
+}
+
+.p.off { opacity: 0.4; filter: grayscale(100%); }
+
+.p small { display: block; color: var(--mute); font-size: 0.85rem; margin-top: 2px; }
+.p .n { font-size: 1.1rem; font-weight: 700; color: var(--paper); }
+.p.turn .n { color: var(--gold); }
+
+#table {
+  /* Efeito de mesa de casino com luz no centro */
+  background: radial-gradient(circle at 50% 30%, #2a3a5a 0%, #131b2f 100%);
+  border: 3px solid #3a506b;
+  border-radius: 20px;
+  padding: 24px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+#table.locked {
+  border-color: var(--red);
+  box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.2), 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+#tablecards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+/* Sobreposição de cartas na mesa */
+#tablecards .card {
+  margin-left: -30px;
+  box-shadow: -4px 4px 10px rgba(0,0,0,0.3);
+  transform: rotate(calc(var(--rot, 0) * 1deg)); /* Prepara para rotação opcional */
+}
+#tablecards .card:first-child { margin-left: 0; box-shadow: var(--card-shadow); }
+
+#tablecards:empty::before {
+  content: "Mesa vazia";
+  color: rgba(148, 163, 184, 0.5);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#log {
+  margin: 0;
+  color: #cbd5e1;
+  text-align: center;
+  font-size: 1rem;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
+#controls { display: flex; gap: 12px; justify-content: center; margin: 10px 0; }
+
+#hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.card {
+  width: 60px;
+  height: 88px;
+  /* Gradiente na carta para parecer papel texturizado/iluminado */
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  color: var(--ink);
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  user-select: none;
+  box-shadow: var(--card-shadow);
+  /* Animação elástica ao interagir */
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, outline 0.1s;
+}
+
+.card.red { color: var(--red); }
+.card.joker { font-size: 0.75rem; color: #7c3aed; letter-spacing: 1px; }
+
+#hand .card { cursor: pointer; }
+
+/* Efeito Hover agradável na mão */
+#hand .card:hover:not(.sel) {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+}
+
+#hand .card.sel {
+  transform: translateY(-16px);
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  box-shadow: 0 12px 20px rgba(0,0,0,0.4);
+}
+
+.card span { font-size: 1.2rem; margin-top: -2px; }
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--paper);
+  border: 1px solid var(--gold);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+#exchange {
+  background: rgba(28, 37, 65, 0.8);
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+#extext { margin: 0; font-size: 1.1rem; }
+#excards { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+.p.danger { border-color: var(--red); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+.p.danger small { color: var(--red); font-weight: bold; }
+
+@media(min-width: 600px) {
+  .card { width: 72px; height: 104px; font-size: 1.6rem; border-radius: 10px; }
+  .card span { font-size: 1.4rem; }
+}
+
+@media(prefers-reduced-motion: reduce) { * { transition: none !important; } }
