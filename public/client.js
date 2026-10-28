@@ -45,7 +45,15 @@ $('exok').onclick = () => socket.emit('exchange', [...selected], res => { handle
 // Reconexão automática à sala guardada
 socket.on('connect', () => {
   const code = localStorage.getItem('room'), name = localStorage.getItem('name');
-  if (code && state) socket.emit('join', { code, name, pid }, handle);
+  if (code && name) {
+    socket.emit('join', { code, name, pid }, res => {
+      if (res && res.error) {
+        // Se a sala já não existir ou der erro, limpa a memória para não ficar num loop
+        localStorage.removeItem('room'); 
+        handle(res);
+      }
+    });
+  }
 });
 
 function cardEl(c, clickable) {
