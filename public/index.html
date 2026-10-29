@@ -14,8 +14,30 @@
   <h1>Olho do Cu</h1>
   <p class="sub">Cartas online com amigos, 4 a 8 jogadores.</p>
   <input id="name" placeholder="O teu nome" maxlength="16" autocomplete="nickname">
-  <button id="create">Criar sala</button>
-  <div class="row"><input id="code" placeholder="Código" maxlength="4"><button id="join" class="alt">Entrar</button></div>
+  
+  <div class="lobby-panel">
+    <h3>Criar Sala</h3>
+    <div class="row">
+      <input id="create-pwd" placeholder="Senha (opcional)" type="password" maxlength="16">
+      <label class="check-box"><input type="checkbox" id="create-priv"> Oculta</label>
+    </div>
+    <button id="create">Criar sala</button>
+  </div>
+
+  <div class="lobby-panel">
+    <h3>Entrar com Código</h3>
+    <div class="row">
+      <input id="code" placeholder="Código" maxlength="4">
+      <input id="join-pwd" placeholder="Senha (opcional)" type="password" maxlength="16">
+      <button id="join" class="alt">Entrar</button>
+    </div>
+  </div>
+
+  <div class="lobby-panel">
+    <h3>Salas Públicas</h3>
+    <div id="room-list">Procurar salas...</div>
+  </div>
+  
   <p id="err" class="err"></p>
 </main>
 
@@ -43,8 +65,6 @@
     <button id="pass" class="alt">Passar</button>
   </section>
   <section id="hand"></section>
-
-  <!-- ADICIONAR ISTO AQUI -->
   <section id="chat">
     <div id="chat-messages"></div>
     <div id="chat-input-area">
@@ -52,7 +72,6 @@
       <button id="chat-send">Enviar</button>
     </div>
   </section>
-  <!-- ATÉ AQUI -->
 </main>
 <div id="toast"></div>
 <script src="/socket.io/socket.io.js"></script>

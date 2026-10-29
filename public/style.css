@@ -316,6 +316,37 @@ header b { font-family: 'Poppins', sans-serif; font-size: 1.5rem; letter-spacing
   box-shadow: none;
 }
 
+/* --- LOBBY NOVOS PAINEIS --- */
+.lobby-panel {
+  background: rgba(28, 37, 65, 0.6);
+  border: 2px solid #2d3e50;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+.lobby-panel h3 { margin: 0 0 12px; color: var(--gold); font-size: 1.1rem; border-bottom: 1px solid #3a506b; padding-bottom: 8px; }
+.check-box { display: flex; align-items: center; gap: 8px; color: var(--mute); font-size: 0.9rem; cursor: pointer; }
+.check-box input { width: auto; transform: scale(1.2); }
+
+#room-list { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.room-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #131b2f; padding: 10px 12px; border-radius: 8px; border: 1px solid #3a506b;
+}
+.room-item.empty { color: var(--mute); justify-content: center; background: transparent; border: none; font-style: italic; }
+.room-item .info strong { color: var(--paper); display: block; font-size: 1rem; }
+.room-item .info span { color: var(--mute); font-size: 0.85rem; }
+
+/* Botão de expulsar na mesa */
+.p { position: relative; }
+.kick-btn {
+  position: absolute; top: -8px; right: -8px;
+  background: var(--red); color: white; border: none; border-radius: 50%;
+  width: 24px; height: 24px; font-size: 12px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.5); opacity: 0;
+}
+.p:hover .kick-btn { opacity: 1; }
+
 @media(min-width: 600px) {
   .card { width: 72px; height: 104px; font-size: 1.6rem; border-radius: 10px; }
   .card span { font-size: 1.4rem; }
