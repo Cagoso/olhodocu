@@ -157,7 +157,13 @@ socket.on('state', s => {
       kbtn.className = 'kick-btn';
       kbtn.innerHTML = '✖';
       kbtn.title = 'Expulsar jogador';
-      kbtn.onclick = () => confirm(`Queres mesmo expulsar o ${p.name}?`) && socket.emit('kick', p.pid);
+      kbtn.onclick = () => {
+        if (confirm(`Queres mesmo expulsar o ${p.name}?`)) {
+          socket.emit('kick', p.pid, res => {
+            if (res && res.error) alert('Erro: ' + res.error);
+          });
+        }
+      };
       d.appendChild(kbtn);
     }
     
