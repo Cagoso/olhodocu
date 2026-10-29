@@ -263,6 +263,7 @@ function viewFor(room, pid) {
     code: room.code, status: room.status, round: room.round, log: room.log,
     isHost: room.hostPid === pid, lock: room.lock, matchLock: room.matchLock ?? null, decks: decksFor(room.players.length),
     players: room.players.map((p, i) => ({
+      pid: p.pid, // <--- O DETALHE QUE FALTAVA PARA O KICK FUNCIONAR!
       name: p.name, count: p.hand.length, title: p.title || null,
       connected: p.connected, isTurn: room.status === 'playing' && i === room.turn, me: p.pid === pid,
       pending: room.status === 'exchange' && room.exchange.jobs.some(j => j.high === p.pid && !j.give),
